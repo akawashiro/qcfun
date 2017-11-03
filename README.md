@@ -80,6 +80,7 @@ Template Haskellとはコンパイル時に展開されるメタプログラミ�
 
 動作例がこちらです。
 ```shell
+% stack exec qcfun-exe
 Test results are following.
 [(False,"tail"),(True,"reverse"),(False,"(map (* 75))"),(False,"tail"),(True,"reverse")]
 ```
