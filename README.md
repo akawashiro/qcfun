@@ -48,15 +48,33 @@ mapは(Int -> Int) -> [Int] -> [Int] 型なので
 さらにその必要な型をもつ関数の規則を持ってきて...という感じです。  
 
 とりあえずこの規則を使って関数を生成できるようになりました。  
-生成した例がこちらです。  
+[Int] -> [Int]型の関数を生成した例がこちらです。  
 ```haskell
 ```
-ちゃんと動いてますね。  
+
+今見せた例はこのようなデータ型で表現されています。
+```haskell
+data QProg = QMap1 QProg | QMap2 QProg QProg 
+             | QTail1 QProg | QTail | QRev | QMult QProg | QAdd QProg | QRand Int deriving (Eq)
+
+instance Show QProg where
+  show (QMap1 p) = "(map " ++ show p ++ ")"
+  show (QMap2 p1 p2) = "(map " ++ show p1 ++ " " ++ show p2 ++ ")"
+  show (QTail1 p) = "(tail " ++ show p ++ ")"
+  show (QTail) = "tail"
+  show QRev = "reverse"
+  show (QMult p) = "(* " ++ show p ++ ")"
+  show (QAdd p) = "(* " ++ show p ++ ")"
+  show (QRand i) = show i
+
+```
+QProg型がプログラム(関数)を表す型です。  
+このQProg型に対して適当なShowインスタンスを定義してあげると関数っぽく見えるようになります。  
 
 ## 作ったテストデータ用の関数で高階関数をテストする
 次に作った関数を使って高階関数をテストしてみましょう。  
-作ったテストデータ用の関数はすべてQProg型です。  
-このQProg型をなんとかして[Int] -> [Int]型に変換したうえで  
+しかし作ったテストデータ用の関数はすべてQProg型です。  
+つまりQProg型をなんとかして[Int] -> [Int]型に変換したうえで  
 テストしたい高階関数に適用する必要があります。  
 
 つまりプログラムの中でプログラムを生成しなければなりません。  
@@ -66,9 +84,10 @@ Haskellでメタプログラミングを行うには2つの方法があります
 ひとつ目はプログラムを表す文字列を生成してevalする方法、  
 もうひとつはTemplate Haskellを使う方法です。  
 
-今回evalは使いません。  
+evalは使いません。  
 なぜならevalの結果はIntやBoolなどのTypableクラスのインスタンスでなければならず  
 [Int] -> [Int]型の関数をTypableクラスのインスタンスにする方法がわからなかったからです。  
+(そもそもTypableってなんなんだ...)
 
 今回はTemplate Haskellを使います。  
 Template Haskellとはコンパイル時に展開されるメタプログラミング手法です。  
