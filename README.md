@@ -39,11 +39,12 @@ mapは(Int -> Int) -> [Int] -> [Int] 型なので
 こんな風にどの関数(例 map)にどの関数(例 (+ 10))を適応すれば  
 どんな型(例 [Int] -> [Int])になるかを規則として書き出します。  
 型付け規則っぽく書くとこんな感じです。  
-![Imgur](https://i.imgur.com/O1jucx2.png)  
+![Imgur](https://i.imgur.com/O1jucx2.png)    
 ちょっとわかりにくいかも知れません。  
 
-[Int] -> [Int]型の関数を一つ作ってみました。  
-![Imgur](https://i.imgur.com/dxFxpxj.png) 
+[Int] -> [Int]型の関数を2つ作ってみました。  
+![Imgur](https://i.imgur.com/dxFxpxj.png)  
+左はmap (+ 10)のような関数、右はmap (+ 10 (* 5))のような関数を表しています。  
 一番下の型にある関数の規則を持ってきて、上に必要な型を書いて  
 さらにその必要な型をもつ関数の規則を持ってきて...という感じです。  
 
