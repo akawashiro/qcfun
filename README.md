@@ -43,7 +43,7 @@ mapは(Int -> Int) -> [Int] -> [Int] 型なので
 ちょっとわかりにくいかも知れません。  
 
 [Int] -> [Int]型の関数を一つ作ってみました。  
-[Imgur](https://i.imgur.com/dxFxpxj.png) 
+![Imgur](https://i.imgur.com/dxFxpxj.png) 
 一番下の型にある関数の規則を持ってきて、上に必要な型を書いて  
 さらにその必要な型をもつ関数の規則を持ってきて...という感じです。  
 
