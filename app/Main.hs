@@ -9,6 +9,8 @@ prop f = (func f [1,2,3]) == [1,2,3]
 testData' = $( testData )
 
 main = do
+  putStrLn "Test datum are following."
+  print testCaption
   putStrLn "Test results are following."
   print $ zip (map prop testData') testCaption
 

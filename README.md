@@ -49,7 +49,11 @@ mapは(Int -> Int) -> [Int] -> [Int] 型なので
 
 とりあえずこの規則を使って関数を生成できるようになりました。  
 [Int] -> [Int]型の関数を生成した例がこちらです。  
-```haskell
+```shell
+% stack exec qcfun-exe
+> Test datum are following.
+> ["tail","reverse","(map (* 75))","tail","reverse"]
+...
 ```
 
 今見せた例はこのようなデータ型で表現されています。
@@ -100,11 +104,12 @@ Template Haskellとはコンパイル時に展開されるメタプログラミ�
 動作例がこちらです。
 ```shell
 % stack exec qcfun-exe
+...
 Test results are following.
 [(False,"tail"),(True,"reverse"),(False,"(map (* 75))"),(False,"tail"),(True,"reverse")]
 ```
-擬似乱数でお茶を濁したので何度実行しても同じテストデータでテストされます。
-テストデータを変更するには擬似乱数のシード値を変更したうえで再コンパイルする必要があります。
+擬似乱数でお茶を濁したので何度実行しても同じテストデータでテストされます。  
+テストデータを変更するには擬似乱数のシード値を変更したうえで再コンパイルする必要があります。  
 
 ## まとめ
 高階関数をまともな(主観)関数でテストできるようにしました。  
@@ -112,15 +117,16 @@ Test results are following.
 テストデータを完全にランダムに生成することはできませんでした。  
 
 ## 参考
+<http://haskell.g.hatena.ne.jp/mr_konn/20111218/1324220725>  
 
 ## 付録
-githubへのリンクです
-以下のコマンドで実行できます。
+githubへのリンクです  
+<https://github.com/akawashiro/qcfun>  
+以下のコマンドで実行できます。  
 ```shell
-git clone 
+git clone https://github.com/akawashiro/qcfun.git
 stack build
 stack exec qcfun-exe
 ```
-ソースコードです。
-Template Haskell的な事情で2つにわかれています。
+ソースコードはTemplate Haskell的な事情で2つにわかれています。  
 
