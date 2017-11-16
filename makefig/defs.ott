@@ -1,0 +1,184 @@
+metavar termvar, x, y, z ::=
+metavar typvar, X, Y, Z ::=
+
+grammar
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Types
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+B :: 'basetype_' ::=
+  | int  :: :: int {{ tex \mathsf{int} }}
+  | bool :: :: bool {{ tex \mathsf{bool} }}
+
+R, S, T, U, Gt {{ tex G }}, Ht {{ tex H }} :: 'type_' ::=
+  | B             ::  :: base
+  | dyn           ::  :: dyn {{ tex \star }}
+  | bot           ::  :: bottom {{ tex \bot }}
+  | R -> R'       ::  :: func
+  | ( R )         :: S:: paren
+  | ty ( c )      :: M:: constant
+  | R & S         ::  :: meet {{ tex [[R]] \& [[S]] }}
+  | | R |         ::  :: shadow {{ tex \lceil [[R]] \rceil }}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Terms
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+num :: 'num_' ::=
+  | 0                ::   :: zero  {{ tex 0 }}
+  | 1                ::   :: one   {{ tex 1 }}
+  | 2                ::   :: two   {{ tex 2 }}
+  | 3                ::   :: three {{ tex 3 }}
+  | 4                ::   :: four  {{ tex 4 }}
+  | 5                ::   :: five  {{ tex 5 }}
+  | 6                ::   :: six   {{ tex 6 }}
+  | 7                ::   :: seven {{ tex 7 }}
+  | 8                ::   :: eight {{ tex 8 }}
+  | 9                ::   :: nine  {{ tex 9 }}
+  | 13               ::   :: thirteen {{ tex 13 }}
+  | 42               ::   :: 42 {{ tex 42 }}
+  | 141              ::   :: 141 {{ tex 141 }}
+  | 197              ::   :: 197 {{ tex 197 }}
+
+numeral :: 'numeral_' ::=
+  | num                      ::   :: num
+  | i                        ::   :: i
+
+k :: 'constant_' ::=
+  | numeral       ::  :: numeral
+  | true          ::  :: true {{ tex \mathsf{true} }}
+  | false         ::  :: false {{ tex \mathsf{false} }}
+  | id            ::  :: id {{ tex \mathsf{id} }}
+  | not           ::  :: not {{ tex \mathsf{not} }}
+
+
+cast :: 'cast_' ::=
+  | s : R => S    ::  :: cast {{ tex [[s]] \ottsym{:} [[R]] \Longrightarrow [[S]] }}
+  | cast => T     ::  :: castseq {{ tex [[cast]] \Longrightarrow [[T]] }}
+
+threesome :: 'threesome_' ::=
+  | s : R => T S  ::  :: threesome {{ tex [[s]] \ottsym{:} [[R]] \overset{[[T]]}{\Longrightarrow} [[S]] }}
+  | threesome => T T' :: :: threesomeseq {{ tex [[threesome]] \overset{[[T]]}{\Longrightarrow} [[T']] }}
+
+s, t, v, w, u :: 'term_' ::=
+  | k             ::  :: constant
+  | x             ::  :: variable
+  | \ x : R . s   ::  :: lambda
+  | s s'          ::  :: application
+  | cast          ::  :: cast
+  | threesome     ::  :: threesome
+  | blame         ::  :: blame {{ tex \mathsf{blame} }}
+  | ( s )         :: S:: paren
+  | s { x := s' } :: M:: subst
+  | E { s }       :: M:: context
+  | delta ( s , s' ) :: M:: delta
+
+E, F :: 'E_' ::=
+  | __           ::  :: hole {{ tex \Box }}
+  | E s'         ::  :: appL
+  | s E          ::  :: appR
+  | E : R => S   ::  :: cast {{ tex [[E]] \ottsym{:} [[R]] \Longrightarrow [[S]] }}
+  | E : R => T S ::  :: threesome {{ tex [[E]] \ottsym{:} [[R]] \overset{[[T]]}{\Longrightarrow} [[S]] }}
+  | E { E' }     ::  :: appC
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Environment
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+ent :: 'ent_' ::=
+  | x : A      ::  :: var
+
+
+G {{ tex \Gamma }} :: 'G_' ::=
+  | empty      ::  ::  empty {{ tex \emptyset }}
+  | , ent      ::  ::  sigleton_var {{ tex [[ent]] }}
+  | G , ent    ::  ::  var
+  | G , G'     ::  ::  append {{ tex [[G]], [[G']] }}
+  | ( G )      :: S::  paren
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Predicates
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+equal :: 'equal_' ::=
+  | =      ::   :: eq
+  | <>     ::   :: neq
+
+inop :: 'inop_' ::=
+  | in     ::   :: in
+  | notin  ::   :: notin
+
+setop :: 'setop_' ::=
+  | and ::  :: and
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Terminals
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+dcolon :: 'dcolon_' ::= {{ com colon as delimiter }}
+  | :      ::   :: colon {{ tex \ottsym{:} }}
+
+arrow :: 'arrow_' ::=
+  | --->  ::  :: reduce {{ tex \longrightarrow }}
+  | --->* ::  :: multireduce {{ tex \longrightarrow^{\star} }}
+  | --->c  ::  :: creduce {{ tex \longrightarrow_{c} }}
+  | --->c* ::  :: cmultireduce {{ tex \longrightarrow_{c}^{\star} }}
+  | |--->  ::  :: ereduce {{ tex \longmapsto }}
+  | |--->* ::  :: emultireduce {{ tex \longmapsto^{\star} }}
+
+typerel :: 'typerel_' ::=
+  | ~    ::  :: consistent {{ tex \sym }}
+  | #    ::  :: incompatible {{ tex \# }}
+  | <:n  ::  :: nsub {{ tex <:_{n} }}
+
+terminals :: 'terminals_' ::=
+  | ->       ::   :: arrow   {{ tex \rightarrow }}
+  | \        ::   :: lambda   {{ tex \lambda }}
+  | /\       ::   :: tylambda {{ tex \Lambda }}
+  | :        ::   :: colon    {{ tex \mathord{:} }}
+  | :=       ::   :: coloneqq {{ tex \coloneqq }}
+  | .        ::   :: period   {{ tex .\, }}
+  | [        ::   :: lbracket {{ tex \left[ }}
+  | ]        ::   :: rbracket {{ tex \right] }}
+  | {        ::   :: lbrace   {{ tex [ }}
+  | }        ::   :: rbrace   {{ tex ] }}
+  | ty       ::   :: ty       {{ tex \mathrm{ty} }}
+  | delta    ::   :: delta    {{ tex \delta }}
+  | empty    ::   :: empty    {{ tex \emptyset }}
+  | =    ::  :: eq
+  | <>   ::  :: neq {{ tex \neq }}
+  | in   ::  :: in {{ tex \in }}
+  | notin ::  :: notin {{ tex \not\in }}
+  | and  ::  :: and {{ tex \cap }}
+  | |-   ::  :: proof {{ tex \vdash }}
+  | &&   ::  :: quad {{ tex \quad }}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Judgements
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+formula :: 'formula_' ::=
+  | judgement            ::   :: judgement
+  | formula1 && formula2 ::   :: seq
+
+defns
+Jdefs :: '' ::=
+defn G |- s dcolon R  :: :: TY ::TY_ by
+defn R typerel R' :: :: TYRel ::TyRel_ by
+defn s arrow s' :: :: REDc ::REDc_ by
+defn R equal R' :: :: TYeq ::'' by
+defn s equal s' :: :: TMeqg ::'' by
+defn E equal E' :: :: ECeq ::'' by
+defn G equal G' :: :: Enveqc ::'' by
+defn ent inop G :: :: Gin ::'' by

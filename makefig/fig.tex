@@ -1,0 +1,78 @@
+\documentclass[9pt, a4paper]{extarticle}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bcprules}
+\usepackage{fancybox}
+\usepackage{mathtools}
+\usepackage{ebproof}
+\usepackage{float}
+\usepackage[truedimen,margin=15truemm]{geometry}
+\usepackage{color}
+\usepackage{xparse}
+
+\input{defs}
+
+% utils
+\newcommand{\rulefbox}[1]{\fbox{\ensuremath{#1}} \hspace{1mm}}
+
+\newcommand{\figheader}[2]{
+  \begin{flushleft}
+    #2 {\bf \normalsize #1}
+\end{flushleft}}
+
+\title{Rules for make a function from primitive function}
+
+\newcommand{\Int}{\textrm{Int}}
+\NewDocumentCommand\I{s}{\IfBooleanTF{#1}{[\mathrm{Int}]}{\mathrm{Int}}}
+\begin{document}
+
+\maketitle
+\figheader{Primitive functions}{}
+% \infrule[Map1]{\I*\to\I}{\Int}
+% \infrule[Map2]{\Int\to\Int\andalso[\Int]}{[\Int]}
+\begin{center}
+    \infrule{\rm{Int} \rightarrow \rm{Int}}{[\rm{Int}] \rightarrow [\rm{Int}]}{\textsc{Map1}} \qquad
+    \infrule{\rm{Int} \rightarrow \rm{Int} \hspace{3mm}  [\rm{Int}]}{[\rm{Int}]}{\textsc{Map2}} \qquad
+    \infrule{\rm{Int}}{\rm{Int} \rightarrow \rm{Int}}{\textsc{Add1}} \qquad
+    \infrule{\rm{Int}}{\rm{Int} \rightarrow \rm{Int}}{\textsc{Mult1}} \\ \medskip
+    \infrule{[\rm{Int}]}{[\rm{Int}]}{\textsc{Tail1}} \qquad
+    \infrule{[\rm{Int}]}{[\rm{Int}]}{\textsc{Reverse1}} \qquad
+    \infrule{}{[\rm{Int}] \rightarrow [\rm{Int}]}{\textsc{Tail}} \qquad
+    \infrule{}{[\rm{Int}] \rightarrow [\rm{Int}]}{\textsc{Reverse}} \\ \medskip
+    \infrule{}{\rm{Int}}{\textsc{Randomint}} \qquad
+    \infrule{\rm{Int} \rightarrow \rm{Int} \hspace{3mm}  \rm{Int} \rightarrow \rm{Int}}{\rm{Int} \rightarrow \rm{Int}}{\textsc{Comp}} \qquad
+    \infrule{[\rm{Int}] \rightarrow [\rm{Int}] \hspace{3mm}  [\rm{Int}] \rightarrow [\rm{Int}]}{[\rm{Int}] \rightarrow [\rm{Int}]}{\textsc{Complist}} \\ 
+\end{center}
+\figheader{Example}{}
+\begin{center}
+\begin{prooftree}[right label template={\textsc{\inserttext}}]
+    \Hypo{}
+    \Infer1[Randomint]{\I}
+    \Infer1[Add1]{\I\to\I}
+    \Infer1[Map1]{\I*\to\I*}
+
+    % \Hypo{\Int\to\Int}
+    % \Infer1[Map1]{\Int\to\Int}
+    % \Hypo{a}
+    % \Infer2[Map1]{\I*\to\I*}
+\end{prooftree}
+\bigskip
+\begin{prooftree}[right label template={\textsc{\inserttext}}]
+    \Hypo{}
+    \Infer1[Randomint]{\I}
+    \Infer1[Add1]{\I\to\I}
+    \Hypo{}
+    \Infer1[Randomint]{\I}
+    \Infer1[Mult1]{\I\to\I}
+    \Infer2[Comp]{\I\to\I}
+    \Infer1[Map1]{\I*\to\I*}
+
+    % \Hypo{\Int\to\Int}
+    % \Infer1[Map1]{\Int\to\Int}
+    % \Hypo{a}
+    % \Infer2[Map1]{\I*\to\I*}
+\end{prooftree}
+\end{center}
+\end{document}

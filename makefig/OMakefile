@@ -1,0 +1,17 @@
+.PHONY: all clean
+.DEFAULT: all
+
+defs.tex: defs.ott
+  ott -i $< -o $@ -tex_wrap false
+
+fig.tex: fig.otex defs.tex defs.ott
+  ott -i defs.ott -tex_wrap false -tex_filter $< $@
+  latexmk $@
+
+all: fig.tex
+
+clean:
+  rm -f defs.tex
+  latexmk -C main.tex
+  latexmk -C fig.tex
+  rm -f main.tex fig.tex
