@@ -20,6 +20,7 @@ library
                      , random
                      , mtl
                      , template-haskell
+                     , QuickCheck
   default-language:    Haskell2010
 
 executable qcfun-exe
