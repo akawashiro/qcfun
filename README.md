@@ -9,6 +9,7 @@ QuickCheckと言うのはHaskellのデータ駆動型のテスト用ライブラ
 どんなテストデータ(関数)を生成してくれるのでしょうか。  
 ちょっと確認してみましょう。  
 ```haskell
+-- QCTest.hs
 import Test.QuickCheck
 import Test.QuickCheck.Function
 
